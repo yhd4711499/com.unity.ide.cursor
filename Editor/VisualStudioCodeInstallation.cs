@@ -54,7 +54,8 @@ namespace Microsoft.Unity.VisualStudio.Editor
 			if (string.IsNullOrEmpty(vstuPath))
 				return Array.Empty<string>();
 
-			return GetAnalyzers(vstuPath); }
+			return GetAnalyzers(vstuPath);
+		}
 
 		public override IGenerator ProjectGenerator
 		{
@@ -132,7 +133,7 @@ namespace Microsoft.Unity.VisualStudio.Editor
 			installation = new VisualStudioCodeInstallation()
 			{
 				IsPrerelease = isPrerelease,
-				Name = "Visual Studio Code" + (isPrerelease ? " - Insider" : string.Empty) + (version != null ? $" [{version.ToString(3)}]" : string.Empty),
+				Name = "Cursor" + (isPrerelease ? " - Insider" : string.Empty) + (version != null ? $" [{version.ToString(3)}]" : string.Empty),
 				Path = editorPath,
 				Version = version ?? new Version()
 			};
@@ -150,17 +151,16 @@ namespace Microsoft.Unity.VisualStudio.Editor
 
 			foreach (var basePath in new[] {localAppPath, programFiles})
 			{
-				candidates.Add(IOPath.Combine(basePath, "Microsoft VS Code", "Code.exe"));
 				candidates.Add(IOPath.Combine(basePath, "Microsoft VS Code Insiders", "Code - Insiders.exe"));
 			}
 #elif UNITY_EDITOR_OSX
 			var appPath = IOPath.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
-			candidates.AddRange(Directory.EnumerateDirectories(appPath, "Visual Studio Code*.app"));
+			candidates.AddRange(Directory.EnumerateDirectories(appPath, "Cursor*.app"));
 #elif UNITY_EDITOR_LINUX
 			// Well known locations
-			candidates.Add("/usr/bin/code");
-			candidates.Add("/bin/code");
-			candidates.Add("/usr/local/bin/code");
+			candidates.Add("/usr/bin/cursor");
+			candidates.Add("/bin/cursor");
+			candidates.Add("/usr/local/bin/cursor");
 
 			// Preference ordered base directories relative to which desktop files should be searched
 			candidates.AddRange(GetXdgCandidates());
@@ -243,7 +243,7 @@ namespace Microsoft.Unity.VisualStudio.Editor
 			}
 			catch (IOException)
 			{
-			}			
+			}
 		}
 
 		private const string DefaultLaunchFileContent = @"{
@@ -440,7 +440,7 @@ namespace Microsoft.Unity.VisualStudio.Editor
 		private const string MicrosoftUnityExtensionId = "visualstudiotoolsforunity.vstuc";
 		private const string DefaultRecommendedExtensionsContent = @"{
     ""recommendations"": [
-      """+ MicrosoftUnityExtensionId + @"""
+      """ + MicrosoftUnityExtensionId + @"""
     ]
 }
 ";
@@ -506,7 +506,7 @@ namespace Microsoft.Unity.VisualStudio.Editor
 			var directory = IOPath.GetDirectoryName(solution);
 			var application = Path;
 
-			ProcessRunner.Start(string.IsNullOrEmpty(path) ? 
+			ProcessRunner.Start(string.IsNullOrEmpty(path) ?
 				ProcessStartInfoFor(application, $"\"{directory}\"") :
 				ProcessStartInfoFor(application, $"\"{directory}\" -g \"{path}\":{line}:{column}"));
 
