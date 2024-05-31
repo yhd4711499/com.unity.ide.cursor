@@ -6,6 +6,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 namespace Microsoft.Unity.VisualStudio.Editor
 {
@@ -13,7 +14,9 @@ namespace Microsoft.Unity.VisualStudio.Editor
 	{
 		public static IEnumerable<IVisualStudioInstallation> GetVisualStudioInstallations()
 		{
-			foreach (var installation in VisualStudioCodeInstallation.GetVisualStudioInstallations())
+			foreach (var installation in VisualStudioCursorInstallation.GetVisualStudioInstallations())
+				yield return installation;
+			foreach (var installation in VisualStudioCodiumInstallation.GetVisualStudioInstallations())
 				yield return installation;
 		}
 
@@ -21,7 +24,10 @@ namespace Microsoft.Unity.VisualStudio.Editor
 		{
 			try
 			{
-				if (VisualStudioCodeInstallation.TryDiscoverInstallation(editorPath, out installation))
+				Debug.Log(editorPath);
+				if (VisualStudioCursorInstallation.TryDiscoverInstallation(editorPath, out installation))
+					return true;
+				if (VisualStudioCodiumInstallation.TryDiscoverInstallation(editorPath, out installation))
 					return true;
 			}
 			catch (IOException)
@@ -34,7 +40,8 @@ namespace Microsoft.Unity.VisualStudio.Editor
 
 		public static void Initialize()
 		{
-			VisualStudioCodeInstallation.Initialize();
+            VisualStudioCursorInstallation.Initialize();
+            VisualStudioCodiumInstallation.Initialize();
 		}
 	}
 }
