@@ -26,5 +26,10 @@ namespace Microsoft.Unity.VisualStudio.Editor
 		public string FlavoringBuildTarget { get; set; } = string.Empty;
 		public string FlavoringUnityVersion { get; set; } = string.Empty;
 		public string FlavoringPackageVersion { get; set; } = string.Empty;
+
+		/// <summary>
+		/// csc.rsp lines
+		/// </summary>
+		public string[] CscRsp { get; set; } = Array.Empty<string>();
 	}
 }

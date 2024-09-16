@@ -734,6 +734,11 @@ namespace Microsoft.Unity.VisualStudio.Editor
 				FlavoringUnityVersion = Application.unityVersion,
 				FlavoringPackageVersion = VisualStudioIntegration.PackageVersion(),
 			};
+			if (assembly.name is "Assembly-CSharp" or "Assembly-CSharp-Editor") {
+				if (File.Exists("Assets/csc.rsp")) {
+					projectProperties.CscRsp = File.ReadAllLines("Assets/csc.rsp");
+				}
+			}
 
 			SetAnalyzerAndSourceGeneratorProperties(assembly, responseFilesData, projectProperties);
 
