@@ -360,20 +360,22 @@ namespace Microsoft.Unity.VisualStudio.Editor {
 				var patched = false;
 
 				// Remove files.exclude for solution+project files in the project root
-				foreach (var exclude in excludes) {
-					if (!bool.TryParse(exclude.Value, out var exc) || !exc)
-						continue;
+				if (false) {
+					foreach (var exclude in excludes) {
+						if (!bool.TryParse(exclude.Value, out var exc) || !exc)
+							continue;
 
-					var key = exclude.Key;
+						var key = exclude.Key;
 
-					if (!key.EndsWith(".sln") && !key.EndsWith(".csproj"))
-						continue;
+						if (!key.EndsWith(".sln") && !key.EndsWith(".csproj"))
+							continue;
 
-					if (!Regex.IsMatch(key, "^(\\*\\*[\\\\\\/])?\\*\\.(sln|csproj)$"))
-						continue;
+						if (!Regex.IsMatch(key, "^(\\*\\*[\\\\\\/])?\\*\\.(sln|csproj)$"))
+							continue;
 
-					patchList.Add(key);
-					patched = true;
+						patchList.Add(key);
+						patched = true;
+					}
 				}
 
 				// Check default solution
