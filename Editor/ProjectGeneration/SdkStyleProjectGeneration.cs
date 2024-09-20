@@ -61,15 +61,8 @@ namespace Microsoft.Unity.VisualStudio.Editor
 			headerBuilder.Append(@"  <PropertyGroup>").Append(k_WindowsNewline);
 			headerBuilder.Append($"    <BaseIntermediateOutputPath>{@"Temp\obj\$(Configuration)\$(MSBuildProjectName)".NormalizePathSeparators()}</BaseIntermediateOutputPath>").Append(k_WindowsNewline);
 			headerBuilder.Append(@"    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>").Append(k_WindowsNewline);
-			foreach (var line in properties.CscRsp) {
-				var splits = line.Split(':');
-				if (splits.Length == 2) {
-					var name = splits[0];
-					if (name.StartsWith('-')) name = name[1..];
-					headerBuilder.Append($"    <{name}>{splits[1]}</{name}>").Append(k_WindowsNewline);
-				} else {
-					Debug.LogWarning("unknown csc.rsp line: " + line);
-				}
+			if (properties.EnableNullable) {
+				headerBuilder.Append("    <Nullable>enable</Nullable>").Append(k_WindowsNewline);
 			}
 			headerBuilder.Append(@"  </PropertyGroup>").Append(k_WindowsNewline);
 

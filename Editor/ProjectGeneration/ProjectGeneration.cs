@@ -692,6 +692,11 @@ namespace Microsoft.Unity.VisualStudio.Editor
 			properties.Analyzers = ToNormalizedPaths(analyzers);
 			properties.AnalyzerConfigPath = ToNormalizedPath(analyzerConfigPath);
 			properties.AdditionalFilePaths = ToNormalizedPaths(additionalFilePaths);
+			
+			var nullables = GetOtherArguments(responseFilesData, new HashSet<string>() { "nullable", "Nullable" });
+			if (nullables.Any(it => it == "enable")) {
+				properties.EnableNullable = true;
+			}
 		}
 
 		private string ToNormalizedPath(string path)
@@ -734,11 +739,6 @@ namespace Microsoft.Unity.VisualStudio.Editor
 				FlavoringUnityVersion = Application.unityVersion,
 				FlavoringPackageVersion = VisualStudioIntegration.PackageVersion(),
 			};
-			if (assembly.name is "Assembly-CSharp" or "Assembly-CSharp-Editor") {
-				if (File.Exists("Assets/csc.rsp")) {
-					projectProperties.CscRsp = File.ReadAllLines("Assets/csc.rsp");
-				}
-			}
 
 			SetAnalyzerAndSourceGeneratorProperties(assembly, responseFilesData, projectProperties);
 
